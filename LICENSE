@@ -1,0 +1,48 @@
+# OpenDeath Proprietary License
+
+**Copyright © 2026 saintkyle. All rights reserved.**
+
+OpenDeath is a closed-source product. This repository is the official distribution and
+documentation hub; it does not contain the application source code.
+
+## 1. Grant
+
+Subject to this license, you may download and run the official OpenDeath binaries for your
+personal use or for internal use within your organization, on devices you own or control.
+
+## 2. Restrictions
+
+Except where a third-party license or applicable law expressly permits it, you may not:
+
+- copy, publish, redistribute, sublicense, rent, lease, or sell the binaries;
+- modify, translate, reverse engineer, decompile, or disassemble the binaries;
+- remove or alter copyright, license, or attribution notices;
+- use the OpenDeath name, logo, or other brand assets to endorse or promote a derived product;
+- distribute the binaries as part of another product or service.
+
+## 3. Third-party components
+
+OpenDeath includes open-source components. Those components remain governed by their own
+licenses, which are listed in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Nothing in
+this license limits rights granted to you by those licenses, including any rights to the
+corresponding source of GPL-licensed components.
+
+OpenCode Desktop, Cloudflare WARP, Windscribe, Mullvad VPN, WireGuard, and Tor are separate
+products with their own licenses and terms. OpenDeath is not affiliated with them.
+
+## 4. No warranty
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES,
+OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF THE SOFTWARE.
+
+## 5. Termination
+
+This license terminates automatically if you breach its terms. On termination, stop using
+and delete the binaries.
+
+## 6. Contact
+
+Open an issue at <https://github.com/saintedKyle/OpenDeath/issues>.
