@@ -55,7 +55,7 @@ reboot.
 ### I need a silent install
 
 ```powershell
-.\OpenDeath-Setup-1.0.0.exe /S
+.\OpenDeath-Setup-1.0.3.exe /S
 ```
 
 Optional components are not selected in silent mode.
@@ -118,10 +118,11 @@ end any `opencode-cli.exe` running from `%LOCALAPPDATA%\Programs\OpenDeath`, and
 - Open the app once.
 - Restart OpenDeath.
 
-### Tor will not connect
+### WARP will not register
 
-Tor is bundled, so there is nothing to install. Some networks block Tor entry guards.
-
+Cloudflare sometimes refuses new registrations for an address. Run
+`warp-cli --accept-tos registration new` in an elevated terminal, then click **Fix connection**.
+If it still fails, wait and retry: the refusal is on Cloudflare's side, not the app's.
 - Try **Auto** mode.
 - Click **Fix connection**.
 - Wait up to two minutes for the first circuit.
@@ -132,7 +133,7 @@ Tor is bundled, so there is nothing to install. Some networks block Tor entry gu
 Some providers report the same IP through IPv6 or a cached DNS answer.
 
 1. Click **Status**.
-2. Try a different mode (WARP → Tor, for example).
+2. Try a different mode (WARP to Proxy, for example).
 3. Click **Fix connection**.
 4. Check that the selected VPN client is actually connected.
 

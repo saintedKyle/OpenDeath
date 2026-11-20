@@ -2,6 +2,26 @@
 
 All notable changes to OpenDeath are documented here.
 
+## 1.0.3 - 2026-11-20
+
+### Changed
+
+- **Tor is removed.** No bundled binary, no Tor route, no Tor code path. The deck now has
+  eight routes: Auto, WARP, HTTP Proxy, SOCKS5, Route64, Mullvad, Windscribe, None. The SOCKS5
+  bridge stays and serves the user's own servers.
+- **WARP is required** and is the default. The wizard installs it before the app.
+- **Auto-update** checks at launch and every ten minutes, downloads in the background, and asks
+  once to restart. Installed builds only; portable builds do not self-update.
+- Smaller installers: the Tor Expert Bundle is no longer inside them.
+
+### Fixed
+
+- Auto-rotate could hold the deck behind a rotation that was already replaced by hand; a manual
+  action now cancels the hunt.
+- A Cloudflare registration refusal ended the hunt only after two wasted attempts; it ends at once
+  and says why.
+- Silent updates relaunch the app when the installer runs from the updater's pending folder.
+
 ## 1.0.0 — 2026-11-18
 
 First public release.

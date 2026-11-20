@@ -20,7 +20,6 @@ Please do not publish a working exploit before the issue has been reviewed.
 - Runs `opendeath.exe` and a bundled `opencode-cli.exe` service on a loopback port.
 - Stores settings in `%APPDATA%\dev.opendeath.desktop`.
 - Writes waiting-chat state to `%APPDATA%\dev.opendeath.desktop\infinite\pending.json`.
-- Optionally starts the bundled Tor client from `resources\tor`.
 - Optionally calls the installed WARP, Windscribe, Mullvad, or WireGuard client.
 - Fetches public proxy lists in HTTP Proxy and SOCKS5 modes.
 - Calls the providers you configure. It does not proxy them through an OpenDeath server.

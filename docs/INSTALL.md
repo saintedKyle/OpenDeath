@@ -45,7 +45,7 @@ present.
 ### 3. Components
 
 `OpenDeath (required)` is always selected. It contains the desktop app, the bundled engine,
-the bundled Tor client, and the uninstaller.
+and the uninstaller.
 
 Choose your shortcuts:
 
@@ -85,7 +85,7 @@ Leave **Launch OpenDeath** checked and click **Finish**. This launches
 
 ## Portable build
 
-1. Download `OpenDeath-Portable-1.0.0.exe`.
+1. Download `OpenDeath-Portable-1.0.3.exe`.
 2. Move it to any writable folder.
 3. Run it.
 
@@ -101,14 +101,14 @@ To remove it, close OpenDeath and delete the portable executable. Remove
 ## Silent install
 
 ```powershell
-.\OpenDeath-Setup-1.0.0.exe /S
+.\OpenDeath-Setup-1.0.3.exe /S
 ```
 
 Silent mode installs the required files and creates the default shortcuts. Optional
 dependency sections are not selected. To choose a directory:
 
 ```powershell
-.\OpenDeath-Setup-1.0.0.exe /S /D=C:\Apps\OpenDeath
+.\OpenDeath-Setup-1.0.3.exe /S /D=C:\Apps\OpenDeath
 ```
 
 `/D` must be the last argument and must not be quoted.
@@ -123,7 +123,7 @@ dependency sections are not selected. To choose a directory:
 4. Click **Fix connection**, then **Status**, to confirm the route.
 5. Start a chat.
 
-Tor is bundled. WARP, Windscribe, Mullvad, and WireGuard modes need their client installed,
+WARP is required and is installed by the wizard. Windscribe, Mullvad, and WireGuard need their client installed,
 running, and signed in.
 
 ---
@@ -140,7 +140,7 @@ For the portable build, close the app and replace the executable.
 ## Verifying a download
 
 ```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.0.exe -Algorithm SHA256
+Get-FileHash .\OpenDeath-Setup-1.0.3.exe -Algorithm SHA256
 Get-Content .\SHA256SUMS.txt
 ```
 

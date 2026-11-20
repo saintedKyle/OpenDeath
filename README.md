@@ -5,8 +5,8 @@
 <p align="center">
   <a href="https://github.com/saintedKyle/OpenDeath/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/saintedKyle/OpenDeath?style=for-the-badge&color=b1162a" /></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-1f1f1f?style=for-the-badge" />
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-b1162a?style=for-the-badge" />
-  <img alt="Source" src="https://img.shields.io/badge/source-closed-1f1f1f?style=for-the-badge" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.3-b1162a?style=for-the-badge" />
+  <a href="https://github.com/saintedKyle/opendeath-src"><img alt="Source" src="https://img.shields.io/badge/source-open-b1162a?style=for-the-badge" /></a>
 </p>
 
 # OpenDeath
@@ -19,7 +19,8 @@ relaunch-resume engine are original work. Under the hood it runs on the OpenCode
 so the sessions, tools, agents, providers, and sign-in flow you already use keep working.
 
 It is **not** a plugin, a theme, or a wrapper around the OpenCode window. OpenDeath ships
-as its own executable with its own application data, bundled engine, and bundled Tor.
+as its own executable with its own application data and a bundled engine. The source is
+public at <https://github.com/saintedKyle/opendeath-src>.
 
 > **OpenDeath does not launch, replace, or modify your OpenCode Desktop installation.**
 > The setup wizard verifies that OpenCode Desktop is present, then installs and launches
@@ -31,10 +32,10 @@ as its own executable with its own application data, bundled engine, and bundled
 
 | | |
 |---|---|
-| **One-click network rotation** | Move the exit IP without leaving the chat. Auto, WARP, Tor, Proxy, SOCKS5, Route64, Mullvad, Windscribe, or Direct. |
+| **One-click network rotation** | Move the exit IP without leaving the chat. Auto, WARP, Proxy, SOCKS5, Route64, Mullvad, Windscribe, or Direct. |
 | **Keep the conversation going** | When a provider free limit appears, OpenDeath rotates and sends `continue` to the waiting chats. |
 | **Survives a restart** | Waiting chats are written to disk and resumed after the app relaunches. |
-| **Ready out of the box** | Tor is bundled. The installer can also add WARP, Windscribe, Mullvad, or WireGuard from their official sources. |
+| **Ready out of the box** | WARP is required and the wizard installs it before the app. Windscribe, Mullvad, and WireGuard can be added from their official sources. |
 | **A desktop, not a demo** | Native tabs, diffs, terminal, built-in browser, dictation, themes, rainbow mode, and a full settings surface. |
 
 ---
@@ -52,7 +53,7 @@ as its own executable with its own application data, bundled engine, and bundled
 ## Features
 
 ### Infinite network deck
-- Nine connection modes: **Auto, WARP, Tor, HTTP Proxy, SOCKS5, Route64, Mullvad, Windscribe, None**
+- Eight connection modes: **Auto, WARP, HTTP Proxy, SOCKS5, Route64, Mullvad, Windscribe, None**
 - **Reset limit** — clear the current allowance and retry the last prompt
 - **Auto-rotate** — 1 to 50 attempts, with burned-IP memory for 24 hours
 - **Fix connection** — diagnose and rebuild the selected route
@@ -83,14 +84,14 @@ Grab the latest build from **[Releases](https://github.com/saintedKyle/OpenDeath
 
 | Asset | Best for | Notes |
 |---|---|---|
-| `OpenDeath-Setup-1.0.0.exe` | Most people | Guided wizard, shortcuts, optional VPN installs, uninstaller |
-| `OpenDeath-Portable-1.0.0.exe` | No install | Runs from any folder or USB drive |
+| `OpenDeath-Setup-1.0.3.exe` | Most people | Guided wizard, shortcuts, optional VPN installs, uninstaller |
+| `OpenDeath-Portable-1.0.3.exe` | No install | Runs from any folder or USB drive |
 | `SHA256SUMS.txt` | Verification | SHA-256 checksums for both binaries |
 
 ### Verify your download
 
 ```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.0.exe -Algorithm SHA256
+Get-FileHash .\OpenDeath-Setup-1.0.3.exe -Algorithm SHA256
 ```
 
 Compare the result with `SHA256SUMS.txt` from the same release.
@@ -117,7 +118,6 @@ You can select these in the setup wizard, or install them later from the vendor:
 | **Windscribe** | Windscribe route and location changes | [windscribe.com](https://windscribe.com/) |
 | **Mullvad VPN** | Mullvad route and location changes | [mullvad.net](https://mullvad.net/) |
 | **WireGuard** | WireGuard tunnel profiles | [wireguard.com](https://www.wireguard.com/) |
-| **Tor** | Anonymous route | **Bundled.** No separate install. |
 
 OpenDeath never downloads these from a third-party mirror. The wizard calls `winget`,
 which resolves each package to the publisher's official installer.
@@ -126,7 +126,7 @@ which resolves each package to the publisher's official installer.
 
 ## Installation
 
-1. Run `OpenDeath-Setup-1.0.0.exe`.
+1. Run `OpenDeath-Setup-1.0.3.exe`.
 2. On the **Prerequisites** page, the wizard looks for OpenCode Desktop.
    - If it is found, continue.
    - If it is missing, click **Open download page**, install OpenCode Desktop, then click
@@ -141,14 +141,14 @@ The wizard installs to `%LOCALAPPDATA%\Programs\OpenDeath` and creates an uninst
 
 ### Portable build
 
-`OpenDeath-Portable-1.0.0.exe` needs no installation. Run it from any writable folder.
+`OpenDeath-Portable-1.0.3.exe` needs no installation. Run it from any writable folder.
 It extracts to a temporary directory at launch and keeps user data in
 `%APPDATA%\dev.opendeath.desktop`.
 
 ### Silent install
 
 ```powershell
-.\OpenDeath-Setup-1.0.0.exe /S
+.\OpenDeath-Setup-1.0.3.exe /S
 ```
 
 Optional components are not selected in silent mode. Add `/COMPONENTS` only if you need a
@@ -163,7 +163,7 @@ custom unattended configuration.
 3. Click **Status** to confirm the exit IP.
 4. Start a chat. The deck stays under the title bar while you work.
 
-Tor is already included. WARP and the other VPN modes require their client to be
+WARP is required and the wizard puts it in place. The other VPN modes require their client to be
 installed and signed in.
 
 ---
@@ -174,7 +174,6 @@ OpenDeath starts its own local OpenCode service, loads the desktop interface fro
 bundle, and manages the network route that the service uses.
 
 - The bundled engine lives in `resources/opencode-cli.exe`.
-- The bundled Tor client lives in `resources/tor/tor/tor.exe`.
 - The UI is loaded from `resources/app.asar` — there is no remote web app.
 - The service listens on a loopback port chosen at startup. Nothing is exposed to the LAN.
 - Provider requests still go to the providers you configure. OpenDeath adds no proxy of its own.
@@ -187,7 +186,7 @@ still waiting, the list is saved and restored on the next launch.
 
 ## Installed file structure
 
-The repository intentionally does not publish application source. This is the user-facing
+The source is public: <https://github.com/saintedKyle/opendeath-src>. This is the user-facing
 layout of the installed application, not the build tree:
 
 ```text
@@ -198,8 +197,6 @@ layout of the installed application, not the build tree:
 │  ├─ app.asar                    Packaged application UI
 │  ├─ opencode-cli.exe            Bundled OpenCode engine
 │  ├─ opencode-cli.version        Engine build identifier
-│  ├─ tor\
-│  │  └─ tor\tor.exe              Bundled Tor client
 │  └─ icons\                      Application icons
 ├─ locales\                       Electron language packs
 ├─ *.dll, *.pak, *.bin            Electron runtime files
@@ -246,7 +243,7 @@ you reinstall.
 | “OpenCode Desktop was not found” | Install it from [opencode.ai/desktop](https://opencode.ai/desktop), then click **Check again** in the wizard. |
 | Optional VPN did not install | Confirm `winget --version` works, then install the client from its official site. Network restrictions can block `winget`. |
 | WARP / Windscribe / Mullvad mode is unavailable | Install the client, sign in, start it once, then restart OpenDeath. |
-| Tor is slow or will not connect | Try another mode, or click **Fix connection**. Some networks block Tor entry guards. |
+| WARP will not register | Cloudflare sometimes refuses new registrations. Run `warp-cli --accept-tos registration new`, then **Fix connection**. |
 | App looks blank after an update | Close OpenDeath, delete `%APPDATA%\dev.opendeath.desktop\Cache`, and relaunch. |
 | Need a clean reset | Close OpenDeath and rename `%APPDATA%\dev.opendeath.desktop` to `dev.opendeath.desktop.bak`. |
 
@@ -259,7 +256,7 @@ More detail: [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
 - OpenDeath adds **no telemetry, analytics, or usage reporting**.
 - Network probes go to Cloudflare’s trace endpoint and the selected provider only.
 - VPN clients are separate products with their own privacy policies.
-- Free proxies and Tor exits can observe traffic metadata. Use HTTPS providers.
+- Free proxies can observe traffic metadata. Use HTTPS providers.
 - Rotating an IP to bypass a provider’s free-tier limit may violate that provider’s terms.
   You are responsible for how you use the app and for complying with the services you connect to.
 
@@ -273,7 +270,7 @@ documentation hub; it contains no application source code.
 - Original OpenDeath work: proprietary, see [`LICENSE`](LICENSE).
 - Third-party components: see [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
 - OpenDeath is not affiliated with OpenCode, Cloudflare, Windscribe, Mullvad, WireGuard,
-  or the Tor Project. All trademarks belong to their owners.
+  All trademarks belong to their owners.
 
 For GPL source-offer information, read the third-party notices.
 
@@ -283,5 +280,5 @@ For GPL source-offer information, read the third-party notices.
 
 Built by **saintkyle**.
 
-Thanks to the OpenCode project for the engine, and to the Tor Project, Cloudflare,
+Thanks to the OpenCode project for the engine, and to Cloudflare,
 Windscribe, Mullvad, and WireGuard teams for the network tools this app integrates with.

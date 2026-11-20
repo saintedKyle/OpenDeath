@@ -4,8 +4,7 @@ OpenDeath is built on open-source software. This page lists the main components 
 licenses that apply to them. The installed application also contains `LICENSE.electron.txt`
 and `LICENSES.chromium.html` from the Electron runtime.
 
-OpenDeath is not affiliated with OpenCode, the Tor Project, Cloudflare, Windscribe, Mullvad,
-or WireGuard. All names and trademarks belong to their owners.
+OpenDeath is not affiliated with OpenCode, Cloudflare, Windscribe, Mullvad, or WireGuard. All names and trademarks belong to their owners.
 
 ---
 
@@ -57,42 +56,6 @@ version and the email address to send the source archive to. This repository doe
 publish the source as part of the product download.
 
 GPL-3.0 text: <https://www.gnu.org/licenses/gpl-3.0.html>
-
-## Tor
-
-- Project: <https://www.torproject.org/>
-- Component: Tor Expert Bundle 16.0.1, Windows x86_64
-- License: BSD 3-Clause
-- Used as: the bundled Tor client in `resources/tor`
-
-```text
-Copyright (c) 2001-2024, Roger Dingledine, Nick Mathewson, and the Tor Project
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice,
-   this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-3. Neither the name of the Tor Project nor the names of its contributors may
-   be used to endorse or promote products derived from this software without
-   specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-```
 
 ## Electron
 

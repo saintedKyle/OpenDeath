@@ -27,12 +27,11 @@ store may no longer receive updates from the OpenCode app.
 | Component | Version | Notes |
 |---|---|---|
 | OpenCode engine | OpenDeath build | `resources\opencode-cli.exe` |
-| Tor Expert Bundle | 16.0.1, Windows x64 | `resources\tor\tor\tor.exe` |
 | Electron | 44.9.1 | Desktop runtime |
 | Node.js runtime | Bundled with Electron | No system Node.js required |
 | Visual C++ runtime | Bundled where needed | No separate redistributable install |
 
-Tor is always available, even if you do not tick any optional component.
+WARP is required; the wizard installs it before the app.
 
 ## Optional VPN clients
 
@@ -68,7 +67,7 @@ found, the route shows as unavailable instead of failing silently.
 
 - No system-wide Node.js, Bun, or npm.
 - No Python.
-- No separate Tor install.
+- No separate proxy client to configure.
 - No OpenCode CLI install — the engine is bundled.
 - No account with OpenDeath. There is no OpenDeath server.
 
