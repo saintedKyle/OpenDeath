@@ -193,8 +193,9 @@ sudo systemctl enable --now warp-svc
 .\OpenDeath-Setup-1.0.4.exe /S
 ```
 
-Optional components are not selected in silent mode. Add `/COMPONENTS` only if you need a
-custom unattended configuration.
+Silent mode installs the default components: the app, Cloudflare WARP, the shortcuts, and the
+`opendeath` CLI. Optional VPN clients stay off. Add `/COMPONENTS` only if you need a custom
+unattended configuration.
 
 ---
 

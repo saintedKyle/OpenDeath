@@ -46,8 +46,9 @@ upgrade.
 .\OpenDeath-Setup-1.0.4.exe /S
 ```
 
-Silent mode does not select optional components. The CLI and VPN checkboxes stay off unless
-you provide `/COMPONENTS`.
+Silent mode installs the default components: the app, Cloudflare WARP, the shortcuts, and the
+`opendeath` CLI. Optional VPN clients stay off. Add `/COMPONENTS` only if you need a custom
+unattended configuration.
 
 ### Update
 
