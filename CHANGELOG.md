@@ -42,7 +42,7 @@ All notable changes to OpenDeath are documented here.
   free proxy list instead of reporting nothing to rotate.
 - WARP tunnel-only clients (no `127.0.0.1:40000` proxy port) are detected and used through
   the tunnel instead of failing the route.
-- The website download counter starts at **612** and is monotonic in both the browser and
+- The website download counter starts at **312** and is monotonic in both the browser and
   the server script. A rotated, missing or unreachable log no longer sends it backwards.
 
 ### Security
