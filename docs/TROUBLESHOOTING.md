@@ -1,214 +1,109 @@
 # Troubleshooting
 
-## Setup and installation
+Start with **Help** in the network deck. It shows the last network error, the usual cause,
+the fix, and copyable commands for Windows and Linux. The **Copy diagnostics** button puts
+the app version, route, IP check, and recent errors on the clipboard.
 
-### “Windows protected your PC” / SmartScreen
+## Windows
 
-The build is not code-signed, so Windows shows a SmartScreen warning the first time.
+| Problem | Fix |
+|---|---|
+| SmartScreen says the publisher is unknown | The build is not code-signed. Choose **More info - Run anyway**, or verify the SHA-256 against `SHA256SUMS.txt` first. |
+| "OpenCode Desktop was not found" | Install it from [opencode.ai/desktop](https://opencode.ai/desktop), then click **Check again**. Advanced users can tick **Continue without OpenCode Desktop**. |
+| WARP is missing | Use **Install WARP now** in the wizard, or install it from [cloudflare.com/warp](https://www.cloudflare.com/warp/), start it once, then click **Check again**. |
+| Optional VPN did not install | Confirm `winget --version` works. Install the client from its official site if `winget` is blocked. |
+| App is blank after an update | Close OpenDeath, delete `%APPDATA%\dev.opendeath.desktop\Cache`, and relaunch. |
+| Reset the whole app | Close it and rename `%APPDATA%\dev.opendeath.desktop` to `dev.opendeath.desktop.bak`. |
+| Uninstall left the CLI on PATH | The uninstaller removes the entry it added. If PATH was edited manually, remove `%LOCALAPPDATA%\Programs\OpenDeath\bin` in **Environment Variables**. |
 
-1. Click **More info**.
-2. Check the publisher line and the file name.
-3. Click **Run anyway**.
+## Linux
 
-If you want to be certain, compare the SHA-256 with `SHA256SUMS.txt` from the release page
-before running the file.
+| Problem | Fix |
+|---|---|
+| `warp-cli: command not found` | Install `cloudflare-warp` from Cloudflare's repository, or rerun the one-command installer with `--warp`. The app checks `PATH` and `/usr/bin`. |
+| WARP says the daemon is not running | `sudo systemctl enable --now warp-svc`, then click **Fix connection**. |
+| AppImage will not start | Install FUSE 2 (`libfuse2` on Debian/Ubuntu, `fuse` on Fedora/Arch), or run `./OpenDeath-1.0.4-x86_64.AppImage --appimage-extract-and-run`. |
+| No tray icon on GNOME | Install the AppIndicator extension, or use the package build instead of the AppImage. |
+| `opendeath` is not found after install | Open a new terminal, or run `command -v opendeath`. The one-command installer puts it in `/usr/local/bin`; the per-user fallback uses `~/.local/bin`, which must be on PATH. |
+| Package manager refuses the deb/rpm | Install the matching dependencies with `sudo apt -f install` or `sudo dnf install`, or use the AppImage. |
 
-### “OpenCode Desktop was not found”
-
-The wizard checks the default per-user install folder, `Program Files`, and the uninstall
-registry.
-
-1. Install OpenCode Desktop from <https://opencode.ai/desktop>.
-2. Return to the wizard.
-3. Click **Check again** on the Prerequisites page.
-
-If you installed OpenCode somewhere unusual, use the **Continue without OpenCode Desktop
-(advanced)** checkbox. OpenDeath is self-contained; the checkbox exists because the shared
-sign-in store is normally created by the OpenCode app.
-
-### Optional VPN did not install
-
-The wizard uses `winget`. Check it in PowerShell:
-
-```powershell
-winget --version
-```
-
-If the command is missing, install **App Installer** from the Microsoft Store, then install
-the VPN client from its official site.
-
-Common reasons winget fails:
-
-- no internet access or a blocked Microsoft Store endpoint;
-- the package is already installed (non-zero exit code, but nothing is broken);
-- the vendor installer needs elevation and the prompt was cancelled;
-- a corporate policy blocks `winget`.
-
-You can always install the client manually. See [`DEPENDENCIES.md`](DEPENDENCIES.md).
-
-### The setup stops while replacing files
-
-Close OpenDeath and any OpenCode window, then run the setup again. The installer runs
-`taskkill` on `opendeath.exe`, but a file can still be locked by antivirus or a pending
-reboot.
-
-### I need a silent install
-
-```powershell
-.\OpenDeath-Setup-1.0.3.exe /S
-```
-
-Optional components are not selected in silent mode.
-
----
-
-## First launch
-
-### The window is blank or stuck on the splash
-
-1. Close OpenDeath.
-2. Delete `%APPDATA%\dev.opendeath.desktop\Cache`.
-3. Relaunch.
-
-If it still fails, check `%APPDATA%\dev.opendeath.desktop\logs` for the last error.
-
-### The app opens OpenCode instead of OpenDeath
-
-That cannot happen from the installed shortcuts: they target
-`%LOCALAPPDATA%\Programs\OpenDeath\opendeath.exe`. If you pinned the wrong executable, unpin
-it and use the Start menu **OpenDeath** shortcut.
-
-The `opencode://` deep-link scheme is shared intentionally so Console authorisation can
-return to the app. Launching a link may open whichever registered handler Windows chooses.
-Launch OpenDeath from its own shortcut for normal use.
-
-### OpenDeath is running but the deck says “engine unavailable”
-
-The local OpenCode service did not start.
-
-1. Click **Fix connection**.
-2. Close OpenDeath completely, including tray processes.
-3. Relaunch.
-
-A stale `opencode-cli.exe` from another build can hold the service port. Open Task Manager,
-end any `opencode-cli.exe` running from `%LOCALAPPDATA%\Programs\OpenDeath`, and relaunch.
-
----
-
-## Network modes
-
-### WARP mode is unavailable
-
-- Install Cloudflare WARP.
-- Open WARP once and complete registration.
-- Confirm `warp-cli --version` works in a new terminal.
-- Restart OpenDeath.
-
-### Windscribe mode is unavailable
-
-- Install Windscribe.
-- Sign in and connect once.
-- Confirm the Windscribe CLI is installed.
-- Restart OpenDeath.
-
-### Mullvad mode is unavailable
-
-- Install Mullvad VPN.
-- Sign in with your account.
-- Open the app once.
-- Restart OpenDeath.
+## WARP and rotation
 
 ### WARP will not register
 
-Cloudflare sometimes refuses new registrations for an address. Run
-`warp-cli --accept-tos registration new` in an elevated terminal, then click **Fix connection**.
-If it still fails, wait and retry: the refusal is on Cloudflare's side, not the app's.
-- Try **Auto** mode.
-- Click **Fix connection**.
-- Wait up to two minutes for the first circuit.
-- If you are behind a captive portal, sign in to the network first.
+Cloudflare limits how many new device registrations one address may create. Since 1.0.4
+this does not block **New IP**: the app rotates the local tunnel key with
+`warp-cli tunnel rotate-keys`, which Cloudflare does not rate-limit, and the existing
+registration keeps connecting.
 
-### The exit IP did not change
+If the daemon really has no registration:
 
-Some providers report the same IP through IPv6 or a cached DNS answer.
+```sh
+warp-cli --accept-tos registration new
+```
 
-1. Click **Status**.
-2. Try a different mode (WARP to Proxy, for example).
-3. Click **Fix connection**.
-4. Check that the selected VPN client is actually connected.
+Wait 10-30 minutes after a 429, run the command, then click **Fix connection**.
 
-### “continue” was not sent to a chat
+### Cloudflare is throttling registrations
 
-OpenDeath sends `continue` only to chats that are waiting on a free limit. If the chat has
-already moved on, there is nothing to resume. The status line reports how many chats were
-updated.
+Only **new registrations** are paused, for 30 minutes. The existing WARP connection and key
+rotation continue to work. **New IP** still changes the exit. Use **Proxy** if you also need
+a different country.
 
-### Chats did not resume after a restart
+### New IP returns the same country
 
-- Check **Settings → Continue after relaunch** is enabled.
-- Make sure the app closed normally, not through Task Manager.
-- Inspect `%APPDATA%\dev.opendeath.desktop\infinite\pending.json`; entries expire after 12 hours.
+A key rotation changes the exit address, not the country Cloudflare assigns. WARP picks the
+country from your network. Use **Proxy** and choose a country from your list, or rotate again
+later. **Auto** does this for you.
 
----
+### WARP does not answer on 127.0.0.1:40000
 
-## Appearance
+That port is WARP's local proxy, and older clients do not have one. 1.0.4 detects this and
+uses WARP's tunnel instead. If the route still fails, update Cloudflare WARP from the
+official source and restart it.
 
-### Background or text color is unreadable
+### Reset limit signed me out
 
-Open **Settings → Personalization** and reset the background and text color. The defaults
-are the dark-red theme with the standard text color.
+Fixed in 1.0.4. The session is archived, the IP changes, and the session is restored before
+the app reconnects. If a rotation fails, the session is still put back. Make sure WARP or
+Proxy works before using Reset.
 
-### Rainbow mode is too intense
+## Updates
 
-Turn off **Rainbow** in Personalization. The setting applies to accents only; the rest of the
-theme stays dark.
+Installed Windows and Linux builds check for updates at launch and every ten minutes. If an
+update does not appear:
 
----
+1. Confirm the app was installed with the setup wizard, not run as the portable build.
+2. Click **Help - Copy diagnostics** and check the version.
+3. Download the current setup from [open.death.cl/download](https://open.death.cl/download.html)
+   and install it over the old version. Settings and chats are preserved.
 
-## Reset and logs
+Portable builds do not self-update. Replace the executable.
 
-### Full settings reset
+## Verify a release file
 
-Close OpenDeath, then rename the data folder:
+Windows:
 
 ```powershell
-Rename-Item "$env:APPDATA\dev.opendeath.desktop" "dev.opendeath.desktop.bak"
+Get-FileHash .\OpenDeath-Setup-1.0.4.exe -Algorithm SHA256
 ```
 
-Relaunch. A new data folder is created. Rename it back to restore the old settings.
+Linux:
 
-### Reset only the network state
-
-Close OpenDeath and delete:
-
-```text
-%APPDATA%\dev.opendeath.desktop\infinite.json
-%APPDATA%\dev.opendeath.desktop\infinite\pending.json
+```sh
+sha256sum -c SHA256SUMS-linux.txt
 ```
 
-### Logs
+If a hash does not match, delete the file and download it again. Do not run a file whose
+hash does not match the published checksum.
 
-```text
-%APPDATA%\dev.opendeath.desktop\logs\
-```
+## Collect diagnostics
 
-Attach the newest log to an issue. Remove anything private before posting.
+**Help - Copy diagnostics** includes:
 
-### Uninstall leaves settings behind
+- OpenDeath version and route
+- WARP client state and whether the local proxy port answers
+- The current exit IP check
+- The last network error and the fixes shown in Help
 
-That is intentional. The uninstaller keeps `%APPDATA%\dev.opendeath.desktop` so a reinstall
-keeps your chats. Delete the folder manually to remove everything.
-
----
-
-## Getting help
-
-Open an issue at <https://github.com/saintedKyle/OpenDeath/issues> and include:
-
-- OpenDeath version (Settings → About)
-- Windows version
-- connection mode
-- the exact error text
-- the newest log file
-
-Do not post API keys, auth tokens, or private chat content.
+Paste that into a bug report. It contains no chat contents and no provider keys.

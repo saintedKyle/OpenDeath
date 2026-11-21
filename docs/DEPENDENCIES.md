@@ -1,97 +1,86 @@
 # Dependencies
 
-OpenDeath is a Windows desktop application. This page explains what is required, what is
-bundled, and what the setup wizard can install for you.
+OpenDeath bundles its own engine and interface. This page lists what the app expects from
+the operating system and which optional clients unlock each network route.
 
-## Required
+## Platform
 
-| Dependency | Version | Why |
+| Platform | Minimum | Notes |
 |---|---|---|
-| Windows | 10 22H2 or 11, 64-bit | The app uses the Electron 44 runtime and Windows APIs |
-| OpenCode Desktop | 2.x | Prerequisite checked by setup; shares the local sign-in store |
-| Internet | — | Model providers, sign-in, and optional downloads |
+| Windows | Windows 10 22H2 or Windows 11, 64-bit | Electron 44 runtime |
+| Linux | Modern 64-bit distribution with glibc and GTK 3 | X11 or Wayland; AppImage needs FUSE 2 |
 
-### OpenCode Desktop
-
-Download: <https://opencode.ai/desktop>
-
-OpenDeath keeps its own executable, application data, and bundled engine. It does not launch
-OpenCode Desktop and does not modify its installation. The setup wizard checks that OpenCode
-Desktop is present before installing.
-
-If you uninstall OpenCode Desktop later, OpenDeath continues to run, but the shared sign-in
-store may no longer receive updates from the OpenCode app.
+The Linux desktop binary is `opendeath-desktop`. The terminal CLI is `opendeath`.
 
 ## Bundled
 
-| Component | Version | Notes |
+| Component | Location | Notes |
 |---|---|---|
-| OpenCode engine | OpenDeath build | `resources\opencode-cli.exe` |
-| Electron | 44.9.1 | Desktop runtime |
-| Node.js runtime | Bundled with Electron | No system Node.js required |
-| Visual C++ runtime | Bundled where needed | No separate redistributable install |
+| OpenCode engine | `resources\opencode-cli.exe` (Windows), `resources/opencode-cli` (Linux) | Ships with the app; no separate OpenCode CLI install |
+| Interface | `resources\app.asar` | Loaded locally; no remote web app |
+| `opendeath` CLI | `bin\opendeath.cmd` on Windows; `/usr/bin/opendeath` on Linux | Wrapper around the bundled engine |
 
-WARP is required; the wizard installs it before the app.
+OpenDeath does **not** bundle or use Tor. There is no Tor binary, route, or code path.
+
+## Windows prerequisites
+
+| Requirement | Details |
+|---|---|
+| **Cloudflare WARP** | Required for the default route. The setup wizard can install it with `winget` or from the official page. |
+| **OpenCode Desktop** | Recommended. The apps share the local sign-in store. The wizard checks for it and offers the official download; advanced users can continue without it. |
+| **winget** | Used only when you tick optional VPN components. Windows 11 includes it; Windows 10 can install **App Installer** from the Microsoft Store. |
+
+If you skip OpenCode Desktop, sign in through OpenDeath's own provider flow. An existing
+OpenCode sign-in store may no longer receive updates from the OpenCode app.
+
+## Linux prerequisites
+
+| Requirement | Details |
+|---|---|
+| **Cloudflare WARP** | Install `cloudflare-warp` from Cloudflare's package repository, then `sudo systemctl enable --now warp-svc`. The one-command installer adds it with `--warp`. |
+| **PolicyKit / systemd** | Used by `warp-svc`. The app only calls `warp-cli`; it does not run a daemon of its own. |
+| **FUSE 2** | Needed by the AppImage. Use your distribution's `fuse`/`libfuse2` package, or run the AppImage with `--appimage-extract-and-run`. |
+
+OpenCode Desktop is not required on Linux; the app bundles the engine and its own sign-in
+flow.
 
 ## Optional VPN clients
 
-The setup wizard can install these through `winget`. They are separate products with their
-own installers, services, accounts, and terms.
+Install these from the vendor or tick them in the Windows setup wizard. Each route looks
+for the vendor CLI in its standard location and on `PATH`.
 
-| Client | winget ID | Official download | Used by |
+| Client | Windows package | Linux package | Used by |
 |---|---|---|---|
-| Cloudflare WARP | `Cloudflare.Warp` | <https://1.1.1.1/> | WARP mode |
-| Windscribe | `Windscribe.Windscribe` | <https://windscribe.com/> | Windscribe mode |
-| Mullvad VPN | `MullvadVPN.MullvadVPN` | <https://mullvad.net/> | Mullvad mode |
-| WireGuard | `WireGuard.WireGuard` | <https://www.wireguard.com/> | WireGuard tunnels |
+| **Cloudflare WARP** | `Cloudflare.Warp` | `cloudflare-warp` | WARP and Auto |
+| **Mullvad VPN** | `MullvadVPN.MullvadVPN` | `mullvad-vpn` | Mullvad |
+| **Windscribe** | `Windscribe.Windscribe` | `windscribe-cli` | Windscribe |
+| **WireGuard** | `WireGuard.WireGuard` | `wireguard-tools` | Route64 and WireGuard tunnels |
 
-### Installing them manually
-
-```powershell
-winget install --id Cloudflare.Warp --exact
-winget install --id Windscribe.Windscribe --exact
-winget install --id MullvadVPN.MullvadVPN --exact
-winget install --id WireGuard.WireGuard --exact
-```
-
-After installing a client:
-
-1. Open it once and complete its sign-in or setup.
-2. Close OpenDeath.
-3. Reopen OpenDeath so it can find the client CLI.
-
-The app looks for the vendor CLI in the standard install locations. If the client is not
-found, the route shows as unavailable instead of failing silently.
-
-## What OpenDeath does not need
-
-- No system-wide Node.js, Bun, or npm.
-- No Python.
-- No separate proxy client to configure.
-- No OpenCode CLI install — the engine is bundled.
-- No account with OpenDeath. There is no OpenDeath server.
+After installing a client, sign in, start it once, and reopen OpenDeath so the route can
+find the CLI. WARP routes use `warp-cli` in proxy mode when the local proxy is available,
+and fall back to the tunnel when it is not.
 
 ## Network endpoints
 
-OpenDeath itself uses:
-
-| Endpoint | Purpose |
+| Purpose | Endpoint |
 |---|---|
-| `https://www.cloudflare.com/cdn-cgi/trace` | Read the current exit IP and WARP state |
-| `https://opencode.ai` | Connectivity probe through the selected route |
-| Provider API endpoints | Your configured model providers |
-| `http://127.0.0.1:<port>` | Local OpenCode service |
+| IP and route checks | Cloudflare trace (`cloudflare.com/cdn-cgi/trace`) and the selected provider |
+| WARP control | `warp-cli` and the local WARP daemon |
+| Free proxy list | proxyscrape.com and public GitHub lists |
+| Updates | `https://open.death.cl/downloads/latest.yml` |
+| Model providers | The providers you configure in the app |
 
-Public proxy lists are fetched from proxyscrape.com and public GitHub repositories only in
-the HTTP Proxy and SOCKS5 modes.
+OpenDeath adds no telemetry, analytics, or usage reporting of its own. VPN clients and
+public proxies are separate services with their own privacy policies.
 
-Optional installers are resolved by `winget` to the vendor's official package.
+## Disk and permissions
 
-## Disk and memory
-
-| Item | Approximate |
+| Item | Approximate size |
 |---|---|
-| Installed application | 1.0–1.3 GB |
-| Portable extraction at runtime | 1.0–1.3 GB in `%TEMP%` |
-| User data | A few MB, plus chat history |
-| Idle memory | 400–700 MB, depending on the workspace |
+| Windows install | 1.3 GB |
+| Linux package or AppImage | 220-450 MB depending on the format |
+| User data | A few MB, plus chat history and session archives |
+
+Windows installs per user and needs no administrator account. The optional VPN installers
+may ask for elevation. Linux packages install system-wide through the package manager; the
+one-command installer falls back to `~/.local` when `sudo` is unavailable.

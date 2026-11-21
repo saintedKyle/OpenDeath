@@ -1,165 +1,162 @@
-# Installation guide
+# Installing OpenDeath
 
-This guide covers the Windows setup wizard and the portable build.
+This guide covers the Windows setup wizard, the portable build, the Linux packages, and
+the `opendeath` terminal CLI.
 
-## Before you begin
+The current release is **1.0.4**. Download every file from
+[open.death.cl/download](https://open.death.cl/download.html) and verify its SHA-256 before
+running it.
 
-1. Use **Windows 10 22H2 or Windows 11, 64-bit**.
-2. Install **OpenCode Desktop** from <https://opencode.ai/desktop>.
-3. Make sure you have an internet connection.
-4. Optional: confirm `winget --version` works in PowerShell. You only need it if you tick
-   optional VPN clients in the wizard.
+## Windows
 
-OpenDeath installs per user under `%LOCALAPPDATA%\Programs\OpenDeath`. It does not need an
-administrator account of its own. Some optional VPN installers may ask for elevation.
+### Requirements
 
----
+- Windows 10 22H2 or Windows 11, 64-bit.
+- Cloudflare WARP. It is the default route and the setup wizard can install it.
+- OpenCode Desktop is recommended because the two apps share the local sign-in store. The
+  wizard offers the official download and an advanced "continue without it" option.
+- About 1.3 GB of disk space.
 
-## Setup wizard
+### Guided setup
 
-### 1. Welcome
+1. Run `OpenDeath-Setup-1.0.4.exe`.
+2. On **Prerequisites**, install WARP if it is missing and click **Check again**. Do the
+   same for OpenCode Desktop, or tick the advanced override.
+3. On **Choose components**:
+   - Leave **OpenDeath** selected.
+   - Tick **Command line (opendeath)** to add the CLI to your user PATH.
+   - Tick any optional VPN client you want. They come from their official winget packages.
+4. Choose Desktop and Start menu shortcuts.
+5. Install and leave **Launch OpenDeath** checked.
 
-The first page introduces OpenDeath and explains that it installs alongside OpenCode
-Desktop. Click **Next**.
+The installer is per user. It writes to `%LOCALAPPDATA%\Programs\OpenDeath`, creates an
+uninstaller in **Settings - Apps - Installed apps**, and never modifies your OpenCode
+Desktop installation.
 
-### 2. Prerequisites
+### Portable build
 
-The wizard checks for OpenCode Desktop in these places:
+`OpenDeath-Portable-1.0.4.exe` needs no installation. Run it from any writable folder. It
+extracts to a temporary folder at launch and keeps user data in
+`%APPDATA%\dev.opendeath.desktop`. Portable builds do not self-update; replace the file to
+upgrade.
 
-- `%LOCALAPPDATA%\Programs\ai.opencode.desktop\OpenCode.exe`
-- `%PROGRAMFILES%\OpenCode\OpenCode.exe`
-- the per-user uninstall registry
-
-If the app is found, the page turns green and you can continue.
-
-If it is not found:
-
-1. Click **Open download page**.
-2. Install OpenCode Desktop.
-3. Return to the wizard and click **Check again**.
-
-There is an advanced checkbox to continue without OpenCode. This is not recommended, because
-OpenDeath shares the local sign-in store and expects the OpenCode desktop prerequisite to be
-present.
-
-### 3. Components
-
-`OpenDeath (required)` is always selected. It contains the desktop app, the bundled engine,
-and the uninstaller.
-
-Choose your shortcuts:
-
-- **Desktop shortcut** — creates `OpenDeath.lnk` that launches `opendeath.exe`.
-- **Start menu shortcut** — creates an OpenDeath folder with the app and uninstaller.
-
-Choose optional VPN clients:
-
-- **Cloudflare WARP**
-- **Windscribe**
-- **Mullvad VPN**
-- **WireGuard**
-
-These checkboxes call `winget install` with the official package ID. Nothing is downloaded
-from a third-party mirror. The clients are not bundled and are not required unless you want
-to use that connection mode. You can leave all of them unchecked and install them later.
-
-### 4. Install location
-
-The default is `%LOCALAPPDATA%\Programs\OpenDeath`. You may choose another folder. Avoid
-installing into `Program Files` unless you understand the per-user permission model.
-
-### 5. Install
-
-The wizard extracts the application, writes the uninstall entry, and creates shortcuts.
-Optional VPN installs may take several minutes and may show a Windows elevation prompt.
-
-If a VPN package is already installed, winget may return a non-zero code. The wizard records
-it and continues; the existing installation is fine.
-
-### 6. Finish
-
-Leave **Launch OpenDeath** checked and click **Finish**. This launches
-`%INSTDIR%\opendeath.exe` — not OpenCode.
-
----
-
-## Portable build
-
-1. Download `OpenDeath-Portable-1.0.3.exe`.
-2. Move it to any writable folder.
-3. Run it.
-
-The portable build extracts itself to a temporary folder at launch. User data is written to
-`%APPDATA%\dev.opendeath.desktop`, so it is shared with an installed copy. Do not run the
-portable and installed copies at the same time.
-
-To remove it, close OpenDeath and delete the portable executable. Remove
-`%APPDATA%\dev.opendeath.desktop` if you also want to delete settings and chats.
-
----
-
-## Silent install
+### Silent install
 
 ```powershell
-.\OpenDeath-Setup-1.0.3.exe /S
+.\OpenDeath-Setup-1.0.4.exe /S
 ```
 
-Silent mode installs the required files and creates the default shortcuts. Optional
-dependency sections are not selected. To choose a directory:
+Silent mode does not select optional components. The CLI and VPN checkboxes stay off unless
+you provide `/COMPONENTS`.
+
+### Update
+
+Installed builds check the official feed at launch and every ten minutes, download in the
+background, and ask once to restart. You can also run a newer setup over the existing
+installation. Settings and chats are preserved.
+
+### Uninstall
+
+Use **Settings - Apps - Installed apps - OpenDeath - Uninstall**. The uninstaller removes
+the application, shortcuts, and the `opendeath` PATH entry it added. It leaves your settings
+and waiting chats in `%APPDATA%\dev.opendeath.desktop`.
+
+## Linux
+
+### Requirements
+
+- A modern 64-bit distribution with glibc, X11 or Wayland, and the usual GTK 3 libraries.
+- Cloudflare WARP for the WARP route (`cloudflare-warp` package). The installer can add it
+  with `--warp`.
+- Optional: Mullvad or Windscribe for their routes.
+- The AppImage needs FUSE 2; otherwise run it with `--appimage-extract-and-run`.
+
+### One command
+
+```sh
+curl -fsSL https://open.death.cl/downloads/install.sh | sh
+```
+
+Add `--warp` to install Cloudflare WARP in the same run:
+
+```sh
+curl -fsSL https://open.death.cl/downloads/install.sh | sh -s -- --warp
+```
+
+The installer reads `/etc/os-release`, picks the right package, verifies the SHA-256 from
+`SHA256SUMS-linux.txt`, and installs the `opendeath` CLI next to the desktop app. It uses
+`sudo` when available and falls back to a per-user install under `~/.local` when it is not.
+
+Detected families: Debian, Ubuntu, Mint, Pop!_OS, Kali, Fedora, RHEL, Rocky, AlmaLinux,
+Nobara, Arch, CachyOS, Manjaro, EndeavourOS, Garuda, and openSUSE. Anything else gets the
+AppImage.
+
+### Packages by hand
+
+```sh
+# Debian, Ubuntu, Mint, Pop!_OS, Kali
+sudo apt install ./OpenDeath-1.0.4-amd64.deb
+
+# Fedora, RHEL, Rocky, AlmaLinux
+sudo dnf install ./OpenDeath-1.0.4-x86_64.rpm
+
+# openSUSE
+sudo zypper install ./OpenDeath-1.0.4-x86_64.rpm
+
+# Any distribution, no install
+chmod +x OpenDeath-1.0.4-x86_64.AppImage
+./OpenDeath-1.0.4-x86_64.AppImage
+```
+
+The desktop command is `opendeath-desktop`; the terminal command is `opendeath`. Start the
+WARP service once:
+
+```sh
+sudo systemctl enable --now warp-svc
+warp-cli --accept-tos registration new   # only if no registration exists yet
+```
+
+### Arch and CachyOS
+
+Install `opendeath-bin` from the AUR, or build the PKGBUILD from
+`packaging/linux/PKGBUILD` in the source repository.
+
+### CLI only
+
+Download `opendeath-cli-1.0.4-linux-x64.tar.gz`, then:
+
+```sh
+tar -xzf opendeath-cli-1.0.4-linux-x64.tar.gz
+sudo install -m 755 opencode /usr/local/bin/opendeath
+opendeath --version
+```
+
+The CLI uses the same engine, configuration, and provider sign-in as the desktop app.
+
+### Uninstall
+
+Use your package manager:
+
+```sh
+sudo apt remove opendeath
+sudo dnf remove opendeath
+sudo zypper remove opendeath
+```
+
+User data stays in `~/.config/dev.opendeath.desktop`.
+
+## Verify a download
+
+Windows:
 
 ```powershell
-.\OpenDeath-Setup-1.0.3.exe /S /D=C:\Apps\OpenDeath
+Get-FileHash .\OpenDeath-Setup-1.0.4.exe -Algorithm SHA256
 ```
 
-`/D` must be the last argument and must not be quoted.
+Linux:
 
----
-
-## First launch
-
-1. If Windows SmartScreen appears, choose **More info → Run anyway**.
-2. Open **Settings → Control room**.
-3. Pick a connection mode. Start with **Auto** or **None**.
-4. Click **Fix connection**, then **Status**, to confirm the route.
-5. Start a chat.
-
-WARP is required and is installed by the wizard. Windscribe, Mullvad, and WireGuard need their client installed,
-running, and signed in.
-
----
-
-## Updating
-
-Run the newer setup over the old installation. The wizard replaces application files and
-keeps `%APPDATA%\dev.opendeath.desktop` untouched.
-
-For the portable build, close the app and replace the executable.
-
----
-
-## Verifying a download
-
-```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.3.exe -Algorithm SHA256
-Get-Content .\SHA256SUMS.txt
+```sh
+sha256sum -c SHA256SUMS-linux.txt
 ```
 
-The hashes must match exactly. If they do not, delete the file and download it again from
-the official release page.
-
----
-
-## Uninstalling
-
-Use **Settings → Apps → Installed apps → OpenDeath → Uninstall**, or run
-`Uninstall OpenDeath.exe` from the install folder.
-
-The uninstaller removes:
-
-- application files under the install folder;
-- Desktop and Start menu shortcuts;
-- the uninstall registry entry;
-- the `opendeath.exe` App Paths entry.
-
-It does **not** remove `%APPDATA%\dev.opendeath.desktop`. Delete that folder manually for a
-full reset.
+The Linux checksum file covers the AppImage, deb, rpm, CLI tarball, and `install.sh`.
