@@ -22,7 +22,7 @@ the app version, route, IP check, and recent errors on the clipboard.
 |---|---|
 | `warp-cli: command not found` | Install `cloudflare-warp` from Cloudflare's repository, or rerun the one-command installer with `--warp`. The app checks `PATH` and `/usr/bin`. |
 | WARP says the daemon is not running | `sudo systemctl enable --now warp-svc`, then click **Fix connection**. |
-| AppImage will not start | Install FUSE 2 (`libfuse2` on Debian/Ubuntu, `fuse` on Fedora/Arch), or run `./OpenDeath-1.0.4-x86_64.AppImage --appimage-extract-and-run`. |
+| AppImage will not start | Install FUSE 2 (`libfuse2` on Debian/Ubuntu, `fuse` on Fedora/Arch), or run `./OpenDeath-1.0.5-x86_64.AppImage --appimage-extract-and-run`. |
 | No tray icon on GNOME | Install the AppIndicator extension, or use the package build instead of the AppImage. |
 | `opendeath` is not found after install | Open a new terminal, or run `command -v opendeath`. The one-command installer puts it in `/usr/local/bin`; the per-user fallback uses `~/.local/bin`, which must be on PATH. |
 | Package manager refuses the deb/rpm | Install the matching dependencies with `sudo apt -f install` or `sudo dnf install`, or use the AppImage. |
@@ -58,7 +58,7 @@ later. **Auto** does this for you.
 
 ### WARP does not answer on 127.0.0.1:40000
 
-That port is WARP's local proxy, and older clients do not have one. 1.0.4 detects this and
+That port is WARP's local proxy, and older clients do not have one. OpenDeath detects this and
 uses WARP's tunnel instead. If the route still fails, update Cloudflare WARP from the
 official source and restart it.
 
@@ -70,22 +70,17 @@ Proxy works before using Reset.
 
 ## Updates
 
-Installed Windows and Linux builds check for updates at launch and every ten minutes. If an
-update does not appear:
-
-1. Confirm the app was installed with the setup wizard, not run as the portable build.
-2. Click **Help - Copy diagnostics** and check the version.
-3. Download the current setup from [open.death.cl/download](https://open.death.cl/download.html)
-   and install it over the old version. Settings and chats are preserved.
-
-Portable builds do not self-update. Replace the executable.
+OpenDeath does not update itself: there is no launch check, background download, update
+feed, or restart prompt. Download the current setup from
+[open.death.cl/download](https://open.death.cl/download.html) and install it over the old
+version. Settings and chats are preserved. The portable build is replaced the same way.
 
 ## Verify a release file
 
 Windows:
 
 ```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.4.exe -Algorithm SHA256
+Get-FileHash .\OpenDeath-Setup-1.0.5.exe -Algorithm SHA256
 ```
 
 Linux:

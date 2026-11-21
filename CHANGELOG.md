@@ -2,6 +2,27 @@
 
 All notable changes to OpenDeath are documented here.
 
+## 1.0.5 - 2026-11-21
+
+### Added
+
+- **Terminal network deck controls**: `opendeath status`, `fix`, `reset`, `rotate` and
+  `route` call the same guarded flows as the desktop buttons. The TUI exposes them as
+  `/deck`, `/fix`, `/reset`, `/rotate` and `/route`.
+- **OpenDeath branding** across the CLI, TUI, crash screen and docs. Provider names such as
+  OpenCode Go and OpenCode Zen stay unchanged.
+
+### Changed
+
+- **Updates are manual**. The desktop no longer checks for, downloads, installs, or prompts
+  to restart an update, and no update feed is contacted. `opendeath upgrade` only prints the
+  manual download path. The TUI `/update` command is gone.
+- **The Windows setup refuses silent installs**: `/S` restores the wizard, shows a refusal,
+  and aborts. Setup never launches OpenDeath by itself.
+- **No packaged update feed**: `app-update.yml` is no longer written into the app payload.
+  The old 1.0.4 `latest.yml` stays on the download host only so pre-1.0.5 builds do not see
+  a new version.
+
 ## 1.0.4 - 2026-11-21
 
 ### Added

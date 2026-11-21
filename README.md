@@ -5,7 +5,7 @@
 <p align="center">
   <a href="https://open.death.cl/download.html"><img alt="Download" src="https://img.shields.io/badge/download-open.death.cl-b1162a?style=for-the-badge" /></a>
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%20%7C%2011%20%7C%20Linux%20x64-1f1f1f?style=for-the-badge" />
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.4-b1162a?style=for-the-badge" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.5-b1162a?style=for-the-badge" />
   <a href="https://github.com/saintedKyle/opendeath-src"><img alt="Source" src="https://img.shields.io/badge/source-public-1f1f1f?style=for-the-badge" /></a>
 </p>
 
@@ -32,7 +32,7 @@ as its own executable with its own application data and its own bundled engine.
 | | |
 |---|---|
 | **One-click network rotation** | Move the exit IP without leaving the chat. Auto, WARP, HTTP Proxy, SOCKS5, Route64, Mullvad, Windscribe, or Direct. |
-| **WARP that keeps working** | 1.0.4 rotates the tunnel key instead of registering a new device, so Cloudflare's registration throttle no longer blocks **New IP**. |
+| **WARP that keeps working** | OpenDeath rotates the tunnel key instead of registering a new device, so Cloudflare's registration throttle no longer blocks **New IP**. |
 | **Keep the conversation going** | When a provider free limit appears, OpenDeath rotates and sends `continue` to the waiting chats. |
 | **Survives a restart** | Waiting chats are written to disk and resumed after the app relaunches. |
 | **Explains itself** | **Help** shows the last network error with the fixes and copyable commands for that exact failure. |
@@ -82,7 +82,7 @@ as its own executable with its own application data and its own bundled engine.
 - Optional `opendeath` terminal CLI, installed by the Windows setup or the Linux installer
 - Desktop and Start menu shortcuts that point to **OpenDeath**, never OpenCode
 - Clean uninstaller that leaves your chats and settings in place
-- Installed builds self-update from the official feed
+- Updates are manual: download the new build and install it over the current one
 
 ---
 
@@ -92,12 +92,12 @@ Grab the latest build from **[open.death.cl](https://open.death.cl/download.html
 
 | Asset | Best for | Notes |
 |---|---|---|
-| `OpenDeath-Setup-1.0.4.exe` | Most Windows users | Guided wizard, shortcuts, optional VPN and CLI installs, uninstaller |
-| `OpenDeath-Portable-1.0.4.exe` | No install on Windows | Runs from any folder or USB drive |
-| `OpenDeath-1.0.4-x86_64.AppImage` | Any Linux distribution | Single file, no installation |
-| `OpenDeath-1.0.4-amd64.deb` | Debian, Ubuntu, Mint, Pop!_OS, Kali | Installs the app and desktop entry |
-| `OpenDeath-1.0.4-x86_64.rpm` | Fedora, RHEL, Rocky, AlmaLinux, openSUSE | Installs the app and desktop entry |
-| `opendeath-cli-1.0.4-linux-x64.tar.gz` | Linux terminal only | The `opendeath` engine without the desktop app |
+| `OpenDeath-Setup-1.0.5.exe` | Most Windows users | Guided wizard, shortcuts, optional VPN and CLI installs, uninstaller |
+| `OpenDeath-Portable-1.0.5.exe` | No install on Windows | Runs from any folder or USB drive |
+| `OpenDeath-1.0.5-x86_64.AppImage` | Any Linux distribution | Single file, no installation |
+| `OpenDeath-1.0.5-amd64.deb` | Debian, Ubuntu, Mint, Pop!_OS, Kali | Installs the app and desktop entry |
+| `OpenDeath-1.0.5-x86_64.rpm` | Fedora, RHEL, Rocky, AlmaLinux, openSUSE | Installs the app and desktop entry |
+| `opendeath-cli-1.0.5-linux-x64.tar.gz` | Linux terminal only | The `opendeath` engine without the desktop app |
 | `install.sh` | One-command Linux install | Detects the distribution, verifies checksums, can add WARP |
 | `SHA256SUMS.txt`, `SHA256SUMS-linux.txt` | Verification | Checksums for every release file |
 
@@ -106,7 +106,7 @@ Grab the latest build from **[open.death.cl](https://open.death.cl/download.html
 Windows:
 
 ```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.4.exe -Algorithm SHA256
+Get-FileHash .\OpenDeath-Setup-1.0.5.exe -Algorithm SHA256
 ```
 
 Linux:
@@ -123,7 +123,7 @@ Compare the result with the matching checksum file from the same release.
 
 ### Windows
 
-1. Run `OpenDeath-Setup-1.0.4.exe`.
+1. Run `OpenDeath-Setup-1.0.5.exe`.
 2. On **Prerequisites**, the wizard checks for Cloudflare WARP and OpenCode Desktop.
    - WARP is the default route. Use **Install WARP now** if it is missing.
    - OpenCode Desktop shares the local sign-in store. If it is missing, install it from
@@ -138,9 +138,9 @@ The wizard installs to `%LOCALAPPDATA%\Programs\OpenDeath` and creates an uninst
 
 ### Portable Windows build
 
-`OpenDeath-Portable-1.0.4.exe` needs no installation. Run it from any writable folder.
+`OpenDeath-Portable-1.0.5.exe` needs no installation. Run it from any writable folder.
 It extracts to a temporary directory at launch and keeps user data in
-`%APPDATA%\dev.opendeath.desktop`. Portable builds do not self-update - replace the file.
+`%APPDATA%\dev.opendeath.desktop`. Updates are manual: replace the file with a newer build.
 
 ### Linux, one command
 
@@ -167,17 +167,17 @@ Arch and CachyOS can also use the AUR package `opendeath-bin`; the PKGBUILD is i
 
 ```sh
 # Debian, Ubuntu, Mint, Pop!_OS, Kali
-sudo apt install ./OpenDeath-1.0.4-amd64.deb
+sudo apt install ./OpenDeath-1.0.5-amd64.deb
 
 # Fedora, RHEL, Rocky, AlmaLinux
-sudo dnf install ./OpenDeath-1.0.4-x86_64.rpm
+sudo dnf install ./OpenDeath-1.0.5-x86_64.rpm
 
 # openSUSE
-sudo zypper install ./OpenDeath-1.0.4-x86_64.rpm
+sudo zypper install ./OpenDeath-1.0.5-x86_64.rpm
 
 # Any distribution, no install
-chmod +x OpenDeath-1.0.4-x86_64.AppImage
-./OpenDeath-1.0.4-x86_64.AppImage
+chmod +x OpenDeath-1.0.5-x86_64.AppImage
+./OpenDeath-1.0.5-x86_64.AppImage
 ```
 
 The desktop binary is `opendeath-desktop`, so the terminal command `opendeath` belongs to
@@ -187,15 +187,11 @@ the CLI. Start the WARP service once after installing WARP on Linux:
 sudo systemctl enable --now warp-svc
 ```
 
-### Silent Windows install
+### Setup is interactive
 
-```powershell
-.\OpenDeath-Setup-1.0.4.exe /S
-```
-
-Silent mode installs the default components: the app, Cloudflare WARP, the shortcuts, and the
-`opendeath` CLI. Optional VPN clients stay off. Add `/COMPONENTS` only if you need a custom
-unattended configuration.
+Run the setup yourself and follow the wizard. OpenDeath refuses silent `/S` installs, so it
+is only installed by a person running the wizard. WARP can still be installed by the setup
+when you choose to.
 
 ---
 
@@ -228,7 +224,7 @@ to become healthy, and asks each waiting chat to continue. If the app closes wit
 still waiting, the list is saved and restored on the next launch.
 
 **WARP rotation.** Cloudflare rate-limits new device registrations, which used to make
-**New IP** fail for everyone behind a busy address. 1.0.4 runs `warp-cli tunnel rotate-keys`
+**New IP** fail for everyone behind a busy address. 1.0.5 runs `warp-cli tunnel rotate-keys`
 first: a new local key makes Cloudflare hand out a new exit without a new registration.
 A redial is next. Registration is attempted only once per ten minutes, and if Cloudflare
 answers 429 the app pauses new registrations for 30 minutes without dropping the existing
@@ -275,12 +271,13 @@ user data lives under `~/.config/dev.opendeath.desktop`.
 
 ## Updating
 
-Installed Windows and Linux builds check for updates at launch and every ten minutes after
-that. They download in the background and ask once to restart. The feed is
-`https://open.death.cl/downloads/latest.yml`, which carries the Windows installer; Linux
-packages are installed from the release page or the one-command installer.
+OpenDeath does not update itself. There is no launch check, background download, update
+feed, or restart prompt. When a new build ships, download it from
+[open.death.cl/download](https://open.death.cl/download.html) and install it over the
+current version. Your settings and waiting chats stay in `%APPDATA%\dev.opendeath.desktop`.
 
-Portable builds do not self-update. Replace the executable; user data is unchanged.
+Portable builds are replaced the same way: download the new executable; user data is
+unchanged.
 
 ---
 
@@ -303,11 +300,11 @@ remain available if you reinstall.
 | Problem | Fix |
 |---|---|
 | Windows SmartScreen warning | The build is not code-signed. Choose **More info - Run anyway**, or verify the SHA-256 first. |
-| WARP will not register | Cloudflare limits new registrations per address. 1.0.4 does not need one to change the IP: **New IP** rotates the tunnel key. If a registration is really missing, wait 10-30 minutes, run `warp-cli --accept-tos registration new`, then click **Fix connection**. |
+| WARP will not register | Cloudflare limits new registrations per address. 1.0.5 does not need one to change the IP: **New IP** rotates the tunnel key. If a registration is really missing, wait 10-30 minutes, run `warp-cli --accept-tos registration new`, then click **Fix connection**. |
 | Cloudflare is throttling registrations | Only new registrations are paused, for 30 minutes. The existing WARP connection and key rotation keep working. Use Proxy if you also need another country. |
-| WARP does not answer on `127.0.0.1:40000` | Older clients have no local proxy. 1.0.4 notices and uses the WARP tunnel instead. On Linux run `sudo systemctl enable --now warp-svc`. |
+| WARP does not answer on `127.0.0.1:40000` | Older clients have no local proxy. 1.0.5 notices and uses the WARP tunnel instead. On Linux run `sudo systemctl enable --now warp-svc`. |
 | `warp-cli` not found on Linux | The app looks on PATH and in `/usr/bin`. Install WARP with the one-command installer plus `--warp`, or from Cloudflare, then start `warp-svc`. |
-| Reset limit signed me out | Fixed in 1.0.4: the session is archived, the IP changes, and the session is restored before the app reconnects. Make sure WARP or Proxy works first. |
+| Reset limit signed me out | Fixed in 1.0.5: the session is archived, the IP changes, and the session is restored before the app reconnects. Make sure WARP or Proxy works first. |
 | Optional VPN did not install | Confirm `winget --version` works, then install the client from its official site. Network restrictions can block `winget`. |
 | WARP / Windscribe / Mullvad mode is unavailable | Install the client, sign in, start it once, then restart OpenDeath. |
 | App looks blank after an update | Close OpenDeath, delete `%APPDATA%\dev.opendeath.desktop\Cache`, and relaunch. |

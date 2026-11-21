@@ -3,7 +3,7 @@
 This guide covers the Windows setup wizard, the portable build, the Linux packages, and
 the `opendeath` terminal CLI.
 
-The current release is **1.0.4**. Download every file from
+The current release is **1.0.5**. Download every file from
 [open.death.cl/download](https://open.death.cl/download.html) and verify its SHA-256 before
 running it.
 
@@ -19,7 +19,7 @@ running it.
 
 ### Guided setup
 
-1. Run `OpenDeath-Setup-1.0.4.exe`.
+1. Run `OpenDeath-Setup-1.0.5.exe`.
 2. On **Prerequisites**, install WARP if it is missing and click **Check again**. Do the
    same for OpenCode Desktop, or tick the advanced override.
 3. On **Choose components**:
@@ -35,25 +35,22 @@ Desktop installation.
 
 ### Portable build
 
-`OpenDeath-Portable-1.0.4.exe` needs no installation. Run it from any writable folder. It
+`OpenDeath-Portable-1.0.5.exe` needs no installation. Run it from any writable folder. It
 extracts to a temporary folder at launch and keeps user data in
-`%APPDATA%\dev.opendeath.desktop`. Portable builds do not self-update; replace the file to
-upgrade.
+`%APPDATA%\dev.opendeath.desktop`. Updates are manual: download a newer build and replace
+the file.
 
-### Silent install
+### Setup is interactive
 
-```powershell
-.\OpenDeath-Setup-1.0.4.exe /S
-```
-
-Silent mode installs the default components: the app, Cloudflare WARP, the shortcuts, and the
-`opendeath` CLI. Optional VPN clients stay off. Add `/COMPONENTS` only if you need a custom
-unattended configuration.
+Run the setup yourself and follow the wizard. It refuses silent `/S` installs, so OpenDeath
+is only installed by a person running it. WARP can still be installed by the wizard when you
+choose to.
 
 ### Update
 
-Installed builds check the official feed at launch and every ten minutes, download in the
-background, and ask once to restart. You can also run a newer setup over the existing
+OpenDeath does not update itself: there is no launch check, background download, update
+feed, or restart prompt. Download the current setup from
+[open.death.cl/download](https://open.death.cl/download.html) and run it over the existing
 installation. Settings and chats are preserved.
 
 ### Uninstall
@@ -96,17 +93,17 @@ AppImage.
 
 ```sh
 # Debian, Ubuntu, Mint, Pop!_OS, Kali
-sudo apt install ./OpenDeath-1.0.4-amd64.deb
+sudo apt install ./OpenDeath-1.0.5-amd64.deb
 
 # Fedora, RHEL, Rocky, AlmaLinux
-sudo dnf install ./OpenDeath-1.0.4-x86_64.rpm
+sudo dnf install ./OpenDeath-1.0.5-x86_64.rpm
 
 # openSUSE
-sudo zypper install ./OpenDeath-1.0.4-x86_64.rpm
+sudo zypper install ./OpenDeath-1.0.5-x86_64.rpm
 
 # Any distribution, no install
-chmod +x OpenDeath-1.0.4-x86_64.AppImage
-./OpenDeath-1.0.4-x86_64.AppImage
+chmod +x OpenDeath-1.0.5-x86_64.AppImage
+./OpenDeath-1.0.5-x86_64.AppImage
 ```
 
 The desktop command is `opendeath-desktop`; the terminal command is `opendeath`. Start the
@@ -124,10 +121,10 @@ Install `opendeath-bin` from the AUR, or build the PKGBUILD from
 
 ### CLI only
 
-Download `opendeath-cli-1.0.4-linux-x64.tar.gz`, then:
+Download `opendeath-cli-1.0.5-linux-x64.tar.gz`, then:
 
 ```sh
-tar -xzf opendeath-cli-1.0.4-linux-x64.tar.gz
+tar -xzf opendeath-cli-1.0.5-linux-x64.tar.gz
 sudo install -m 755 opencode /usr/local/bin/opendeath
 opendeath --version
 ```
@@ -151,7 +148,7 @@ User data stays in `~/.config/dev.opendeath.desktop`.
 Windows:
 
 ```powershell
-Get-FileHash .\OpenDeath-Setup-1.0.4.exe -Algorithm SHA256
+Get-FileHash .\OpenDeath-Setup-1.0.5.exe -Algorithm SHA256
 ```
 
 Linux:
